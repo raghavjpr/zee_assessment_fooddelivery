@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { register } from "../action/authAction";
 
 const Register = ({ auth: { isAuthenticated }, register }) => {
@@ -40,12 +40,13 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
     e.preventDefault();
     console.log(houseno, street, "------");
 
-    if (password == password2) {
+    if (password === password2) {
       const formData1 = {
         name: name,
         email: email,
         password: password,
-        address: houseno + "  " + street + " " + city + " " + zipcode,
+        address:
+          houseno + "  " + street + " " + city + " " + state + " " + zipcode,
         roles: roles1,
       };
       console.log(formData1);
@@ -70,11 +71,10 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
 
                   <form class="mx-1 mx-md-4" onSubmit={onSubmit}>
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input
                           type="text"
-                          className="form-control form-control-lg"
+                          className="form-control"
                           placeholder="Name"
                           name="name"
                           onChange={onChange}
@@ -85,11 +85,10 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input
                           type="email"
-                          className="form-control form-control-lg"
+                          className="form-control"
                           placeholder="Email Address"
                           name="email"
                           onChange={onChange}
@@ -99,7 +98,6 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="far fa-user fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <select
                           name="roles"
@@ -118,11 +116,10 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input
                           type="password"
-                          className="form-control form-control-lg"
+                          className="form-control"
                           placeholder="Password"
                           name="password"
                           onChange={onChange}
@@ -132,11 +129,10 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input
                           type="password"
-                          className="form-control form-control-lg"
+                          className="form-control"
                           placeholder="Confirm Password"
                           name="password2"
                           onChange={onChange}
@@ -146,7 +142,6 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                       </div>
                     </div>
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-address-card fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input
                           type="text"
@@ -200,17 +195,17 @@ const Register = ({ auth: { isAuthenticated }, register }) => {
                       </div>
                     </div>
 
-                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <div className="text-center pt-1 mb-4 pb-1">
                       <input
                         type="submit"
-                        className="btn btn-info btn-block mt-1"
+                        value="                    Sign Up                    "
                       />
                     </div>
                   </form>
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                   <img
-                    src="https://wallpaperaccess.com/full/6221127.jpg"
+                    src="https://icon-library.com/images/sign-up-icon/sign-up-icon-25.jpg"
                     class="img-fluid"
                     alt="Sample image"
                   />

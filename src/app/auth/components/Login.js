@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../action/authAction";
 
 const Login = ({ login }) => {
@@ -22,96 +22,68 @@ const Login = ({ login }) => {
   };
 
   return (
-    <div>
-      <section className="h-15 pt-2 gradient-form">
-        <div className="container py-5  pt-2">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-xl-10">
-              <div className="card rounded-3 text-black">
-                <div className="row g-0">
-                  <div className="col-lg-6">
-                    <div className="card-body p-md-5 mx-md-4">
-                      <div className="text-center">
-                        <h4>Food Delivery</h4>
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black">
+            <div class="card-body p-md-0">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                    Food Delivery Login
+                  </p>
 
-                        <img
-                          src="https://t4.ftcdn.net/jpg/03/10/96/77/360_F_310967735_vWiWRc8DGV3fb4eaW8O339AvbOsmxzVi.jpg"
-                          style={{ width: 120 }}
-                          alt="logo"
+                  <form class="mx-1 mx-md-4" onSubmit={onSubmit}>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="email"
+                          className="form-control"
+                          placeholder="Email Address"
+                          name="email"
+                          value={email}
+                          onChange={(e) => onChange(e)}
+                          required
                         />
-                        <h5>India's largest Food Delivery Service. </h5>
-                        <h5>Better food for more people. </h5>
+                        <label class="form-label">Your Name</label>
                       </div>
-                      <br />
-                      <br />
-                      <form onSubmit={(e) => onSubmit(e)}>
-                        <p>Please login to your account</p>
-
-                        <div className="form-outline mb-4">
-                          <input
-                            type="email"
-                            className="form-control"
-                            placeholder="Email Address"
-                            name="email"
-                            value={email}
-                            onChange={(e) => onChange(e)}
-                            required
-                          />
-                          <label className="form-label">Your Email</label>
-                        </div>
-
-                        <div className="form-outline mb-4">
-                          <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Password"
-                            name="password"
-                            minLength="6"
-                            value={password}
-                            onChange={(e) => onChange(e)}
-                            required
-                          />
-                          <label className="form-label">Password</label>
-                        </div>
-
-                        <div className="text-center pt-1 mb-4 pb-1">
-                          <input
-                            type="submit"
-                            className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-4"
-                            value="                    Login                    "
-                          />
-                        </div>
-
-                        <div className="d-flex align-items-center justify-content-center pb-4">
-                          <p className="mb-0 me-2">Don't have an account?</p>
-                          <Link
-                            to="/api/register"
-                            type="button"
-                            className="btn btn-outline-danger"
-                          >
-                            Create new
-                          </Link>
-                        </div>
-                      </form>
                     </div>
-                  </div>
-                  <div className="col-lg-6 d-flex align-items-center gradient-custom-2">
-                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                      <h4 className="mb-4" align="justify">
-                        अब एक दशक से अधिक समय से, हम अपने उपयोगकर्ताओं को देशों
-                        में नए स्वाद और अनुभवों की खोज करने में सशक्त बना रहे
-                        हैं। अपने उपयोगकर्ताओं के लिए सावधानीपूर्वक जानकारी एक
-                        साथ रखकर, हम उन्हें एक सूचित विकल्प बनाने में सक्षम
-                        बनाते हैं
-                      </h4>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="password"
+                          className="form-control"
+                          placeholder="Password"
+                          name="password"
+                          minLength="6"
+                          value={password}
+                          onChange={(e) => onChange(e)}
+                          required
+                        />
+                        <label class="form-label">Your Email</label>
+                      </div>
                     </div>
-                  </div>
+                    <div className="text-center pt-1 mb-4 pb-1">
+                      <input
+                        type="submit"
+                        value="                    Sign In                    "
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                  <img
+                    src="https://thumbs.dreamstime.com/b/sign-hand-pointer-icon-login-symbol-website-navigation-circle-flat-button-shadow-border-vector-78390148.jpg"
+                    class="img-fluid"
+                    alt="Sample image"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

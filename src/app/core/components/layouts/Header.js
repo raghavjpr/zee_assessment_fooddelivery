@@ -86,7 +86,7 @@ const Header = ({ auth: { isAuthenticated, user }, logout, deleteUser }) => {
         <li className="nav-item">
           <Link className="nav-link" to="/auth/login">
             <i className="fas fa-sign-in-alt" />
-            Log In
+            Sign In
           </Link>
         </li>
       </ul>
@@ -97,7 +97,7 @@ const Header = ({ auth: { isAuthenticated, user }, logout, deleteUser }) => {
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
       <div className="container">
         <Link className="navbar-brand" to="/">
-          <h4>FoodDelivery</h4>
+          <h4>Food Delivery</h4>
         </Link>
         <button
           className="navbar-toggler"
