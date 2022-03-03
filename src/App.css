@@ -1,10 +1,11 @@
 .landing {
   position: relative;
-  background: url("./app/assets/img/showcase.jpg") no-repeat;
+  background: url("https://t4.ftcdn.net/jpg/02/94/21/87/360_F_294218701_se4mQtVmQoPnG4UX7J8PjvTzn8yeWyqF.jpg")
+    no-repeat;
   background-size: cover;
   background-position: center;
-  height: 90vh;
-  margin-top: -1px;
+  height: 100vh;
+  margin-top: -24px;
   margin-bottom: -50px;
 }
 
@@ -13,7 +14,7 @@
 }
 
 .dark-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
   position: absolute;
   top: 0;
   left: 0;
@@ -34,14 +35,29 @@
   color: #bbb !important;
 }
 
-.table2 {
-  border-collapse: collapse;
+.card-img-top {
   width: 100%;
-  color: #282828;
-  font-family: monospace;
-  font-size: 25px;
+  height: 15vw;
+  object-fit: cover;
+}
+
+table {
+  border: 2px solid forestgreen;
+  width: 800px;
+  height: 200px;
+}
+
+th {
+  border-bottom: 1px solid black;
   text-align: center;
-  margin-top: 130px;
+}
+
+td {
+  text-align: center;
+}
+
+i {
+  padding-right: 0.5rem;
 }
 
 container {

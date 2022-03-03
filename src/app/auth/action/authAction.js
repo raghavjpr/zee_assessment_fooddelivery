@@ -1,82 +1,86 @@
+import { Link, Navigate } from "react-router-dom";
 import {
-  LOGIN_SUCCESS,
-  LOGOUT,
-  REGISTER_FAIL,
   REGISTER_SUCCESS,
   USER_LOADED,
-  CLEAR_USER,
-  ACCOUNT_DELETED,
+  LOGIN_SUCCESS,
+  REGISTER_FAIL,
+  LOGOUT,
+  LOGIN_FAIL,
+  USER_DELETED,
+  AUTH_ERROR,
 } from "../../../redux/types/userTypes";
 import api from "../../../utils/api";
 import { setAlert } from "../../core/actions/alertAction";
 
-export const deleteAccount = (id) => async (dispatch) => {
-  if (
-    window.confirm(
-      "Are you sure you want to delete this account? This cannot be undone!"
-    )
-  ) {
-    console.log("deleteAccount ho raha?");
-    await api.delete(`/users/${id}`);
-
-    dispatch({ type: CLEAR_USER });
-    dispatch({ type: ACCOUNT_DELETED });
-
-    dispatch(setAlert("Your account has been permanently deleted"));
-  }
-};
-export const register = (formData) => async (dispatch) => {
+export const register = (formData, navigate) => async (dispatch) => {
   try {
-    const res = await api.post("/api/register", formData); //await:waits until we get response from post method
-    console.log(formData);
-
-    //dispatch will connect you to middleware
-    dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-    dispatch(setAlert("Successfully registered", "success"));
-    dispatch(loadUser());
-    //localStorage.setItem("accessToken", res.data.accessToken);
+    await api.post("/auth/register", formData);
+    dispatch(setAlert("User successfully registered!", "success"));
+    dispatch({ type: REGISTER_SUCCESS });
+    navigate("/auth/login");
   } catch (err) {
-    const errors = err.response.data.subErrors;
-    console.log(JSON.stringify("Data is: " + JSON.stringify(errors)));
-    if (errors) {
-      errors.forEach((error) =>
-        dispatch(setAlert(error.field + " " + error.message, "danger"))
+    const subErrors = err.response.data.subErrors;
+    if (subErrors) {
+      subErrors.forEach((error) =>
+        dispatch(setAlert(`${error.field} ${error.message}`, "danger"))
       );
     }
     dispatch({ type: REGISTER_FAIL });
   }
 };
 
-export const loadUser = (accessToken) => async (dispatch) => {
+export const loadUser = () => async (dispatch) => {
   try {
-    accessToken = localStorage.getItem("accessToken");
-    const res = await api.get(`/auth/${accessToken}`, accessToken);
-    dispatch({ type: USER_LOADED, payload: res.data });
-    // dispatch(setAlert("Welcome " + res.data.username, "success"));
+    const res = await api.get("/auth/");
+    const { id, email, name, password, address, roles, cart } = res.data;
+    var isAdmin = false;
+    roles.forEach((role) => {
+      if (role.roleName === "ROLE_ADMIN") {
+        isAdmin = true;
+      }
+    });
+    dispatch({
+      type: USER_LOADED,
+      payload: { id, email, name, password, address, roles, cart, isAdmin },
+    });
   } catch (err) {}
 };
 
-export const login = (email, password) => async (dispatch) => {
-  const body = JSON.stringify({ email, password });
+export const login = (formData, navigate) => async (dispatch) => {
   try {
-    const res = await api.post("/authenticate", body); //await:waits until we get response from post method
+    const res = await api.post("/auth/authenticate", formData);
+    dispatch(setAlert("User successfully logged in!", "success"));
 
-    //dispatch will connect you to middleware
-    dispatch({ type: LOGIN_SUCCESS, payload: res.data });
-    dispatch(setAlert("Login successful", "success"));
+    const { id, email, tokenType, roles } = res.data;
+    const token = "Bearer " + res.data.token;
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { token, user: { id, email, tokenType, roles } },
+    });
     dispatch(loadUser());
+    navigate("/");
   } catch (err) {
-    console.log(err.response.data.message);
-    dispatch(setAlert(err.response.data.message, "danger"));
+    dispatch(setAlert("Invalid Credentials!", "danger"));
+    dispatch({ type: LOGIN_FAIL });
   }
 };
 
 export const logout = () => async (dispatch) => {
-  try {
-    //  const res = await api.post("/auth");
-    dispatch({ type: LOGOUT });
-    //dispatch({ type: CLEAR_PROFILE });
-    dispatch(setAlert("Logout successful", "success"));
-    //dispatch(loadUser());
-  } catch (err) {}
+  dispatch({ type: LOGOUT });
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  if (window.confirm("Are you sure? This can NOT be undone!")) {
+    try {
+      await api.delete(`/users/${id}`);
+
+      dispatch({ type: USER_DELETED });
+
+      dispatch(setAlert("Your account has been permanently deleted"));
+      // <a href="/"></a>;
+    } catch (err) {
+      dispatch(setAlert("User not Deleted!", "danger"));
+      dispatch({ type: AUTH_ERROR });
+    }
+  }
 };

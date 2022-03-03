@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const PrivateRoute = ({
+const PrivateRoute = ({
   component: Component,
   auth: { isAuthenticated, loading },
 }) => {
@@ -13,18 +13,13 @@ export const PrivateRoute = ({
     if (!isAuthenticated) {
       navigate("/auth/login");
     }
-  });
-  if (isAuthenticated) {
-    return <Component></Component>;
-  }
-  //return <Navigate to="/auth/login"></Navigate>;
+  }, [navigate, isAuthenticated]);
 
-  return " ";
+  return <Component />;
 };
 
 PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired,
-  //component: PropTypes.element.isRequired,
 };
 
 const mapStateToProps = (state) => ({

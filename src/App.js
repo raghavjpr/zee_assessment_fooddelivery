@@ -1,40 +1,44 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./app/core/components/layouts/Header";
-import Landing from "./app/core/components/layouts/Landing";
 import Footer from "./app/core/components/layouts/Footer";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AuthRouters } from "./app/auth/routings/AuthRouters";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import AuthRouters from "./app/auth/routings/AuthRouters";
 import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./app/auth/action/authAction";
-import DashboardRouter from "./app/dashboard/routings/DashboardRouter";
-import { FoodRouters } from "./app/food/routing/FoodRouters";
 import Alert from "./app/core/components/Alert";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { useEffect } from "react";
+import Home from "./app/home/components/Home";
+import FoodRouters from "./app/foods/routings/FoodRouters";
+import CartRouters from "./app/cart/routings/CartRouters";
+import Checkout from "./app/cart/components/Checkout";
 
-if (localStorage.accessToken) {
-  setAuthToken(localStorage.getItem("accessToken"));
-  store.dispatch(loadUser(localStorage.getItem("accessToken")));
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
 }
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <div className="App">
       <Provider store={store}>
         <Router>
           <Header />
-
           <Alert />
-
           <Routes>
-            <Route path="/" element={<Landing></Landing>}></Route>
+            <Route path="/" element={<Home />}></Route>
             <Route path="/auth/*" element={<AuthRouters></AuthRouters>}></Route>
             <Route
-              path="/dashboard/*"
-              element={<DashboardRouter></DashboardRouter>}
+              path="/foods/*"
+              element={<FoodRouters></FoodRouters>}
             ></Route>
-            <Route path="/food/*" element={<FoodRouters></FoodRouters>}></Route>
+            <Route path="/cart/*" element={<CartRouters></CartRouters>}></Route>
+
+            <Route path="/checkout" element={<Checkout />}></Route>
           </Routes>
           <Footer></Footer>
         </Router>

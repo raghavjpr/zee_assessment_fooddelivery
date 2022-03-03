@@ -1,20 +1,22 @@
 import {
+  ADD_FOOD,
   CLEAR_FOOD,
-  CREATE_FOOD,
   FOOD_DELETED,
   FOOD_ERROR,
   GET_FOOD,
   GET_FOODS,
+  GET_FOODS_BY_TYPE,
   UPDATE_FOOD,
 } from "../../../redux/types/foodTypes";
 import api from "../../../utils/api";
 import { setAlert } from "../../core/actions/alertAction";
 
+// Get all foods
 export const getFoods = () => async (dispatch) => {
   dispatch({ type: CLEAR_FOOD });
 
   try {
-    const res = await api.get("/food");
+    const res = await api.get("/food/");
 
     dispatch({
       type: GET_FOODS,
@@ -28,9 +30,12 @@ export const getFoods = () => async (dispatch) => {
   }
 };
 
-export const getFoodById = (userId) => async (dispatch) => {
+//change
+
+// Get food by ID
+export const getFoodById = (foodId) => async (dispatch) => {
   try {
-    const res = await api.get(`/food/${userId}`);
+    const res = await api.get(`/food/${foodId}`);
 
     dispatch({
       type: GET_FOOD,
@@ -44,20 +49,25 @@ export const getFoodById = (userId) => async (dispatch) => {
   }
 };
 
+// Add Food
 export const addFood = (formData, navigate) => async (dispatch) => {
   try {
-    const res = await api.post("/food", formData);
-
+    const res = await api.post("/food/", formData);
+    console.log(formData);
     dispatch({
-      type: CREATE_FOOD,
+      type: ADD_FOOD,
       payload: res.data,
     });
 
-    dispatch(setAlert("Food Details Added", "success"));
+    dispatch(setAlert("Food Added", "success"));
 
-    navigate("/dashboard/");
+    navigate("/");
   } catch (err) {
-    dispatch(setAlert(err.response.data.message, "danger"));
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
 
     dispatch({
       type: FOOD_ERROR,
@@ -66,18 +76,45 @@ export const addFood = (formData, navigate) => async (dispatch) => {
   }
 };
 
-export const updateFood = (formData, navigate, id) => async (dispatch) => {
+// Delete Food
+export const deleteFoodById = (foodId, navigate) => async (dispatch) => {
   try {
-    const res = await api.put(`/food/${id}`, formData);
+    const res = await api.delete(`/food/${foodId}`);
 
+    dispatch({
+      type: FOOD_DELETED,
+      payload: res.data,
+    });
+
+    dispatch(setAlert("Food Deleted", "success"));
+
+    navigate("/");
+  } catch (err) {
+    dispatch({
+      type: FOOD_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Edit or update Food
+export const updateFood = (foodId, formData, navigate) => async (dispatch) => {
+  try {
+    const res = await api.put(`/food/${foodId}`, formData);
     dispatch({
       type: UPDATE_FOOD,
       payload: res.data,
     });
-    dispatch(setAlert("Food Details Updated", "success"));
-    navigate("/dashboard/");
+
+    dispatch(setAlert("Food updated", "success"));
+
+    navigate("/");
   } catch (err) {
-    dispatch(setAlert(err.response.data.message, "danger"));
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
 
     dispatch({
       type: FOOD_ERROR,
@@ -85,13 +122,13 @@ export const updateFood = (formData, navigate, id) => async (dispatch) => {
     });
   }
 };
-
-export const getFoodByType = (type) => async (dispatch) => {
+// Get food by type
+export const getFoodByType = (foodType) => async (dispatch) => {
   try {
-    const res = await api.get(`/food/dummy/${type}`);
+    const res = await api.get(`/food/type/${foodType}`);
 
     dispatch({
-      type: GET_FOODS,
+      type: GET_FOODS_BY_TYPE,
       payload: res.data,
     });
   } catch (err) {
@@ -101,22 +138,3 @@ export const getFoodByType = (type) => async (dispatch) => {
     });
   }
 };
-
-export const deleteFood = (id) => async (dispatch) => {
-  try {
-    const res = await api.delete(`/food/${id}`);
-
-    dispatch({
-      type: CLEAR_FOOD,
-    });
-    dispatch({ type: FOOD_DELETED });
-    dispatch(setAlert("Food Removed", "success"));
-  } catch (err) {
-    dispatch(setAlert(err.response.data.message, "danger"));
-    dispatch({
-      type: FOOD_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
-};
-//   export default getFoods;

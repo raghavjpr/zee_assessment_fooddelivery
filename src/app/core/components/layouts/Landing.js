@@ -1,32 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-//Link and to instead of a and href : does not refresh page like latter two and saves those rest calls to be made
-export default class Landing extends Component {
-  render() {
-    return (
-      <div className="landing">
-        <div className="dark-overlay landing-inner text-light">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 text-center">
-                <h1 className="display-3 mb-4">Food Delivery</h1>
-                <p className="lead">
-                  {" "}
-                  Order your favourite food at anytime with Food Delivery!
-                </p>
-                <hr />
-                <Link to="/auth/register" className="btn btn-lg btn-info mr-2">
-                  Sign Up
-                </Link>
-                <Link to="/auth/login" className="btn btn-lg btn-light">
-                  Login
-                </Link>
-              </div>
+function Landing() {
+  return (
+    <div className="landing">
+      <div className="dark-overlay landing-inner text-light">
+        <div className="container-fluid m-0">
+          <div className="row">
+            <div className="col-md-12 text-center">
+              <h1 className="mb-4 text">Food Delivery</h1>
+              <p className="lead">
+                Welcome to Aadi Kitchen. Like Share and Subscribe. All payment
+                are going to be done by Aadi.
+              </p>
+              <hr />
+
+              <Link to="/auth/register" className="btn btn-lg btn-info me-2">
+                Sign Up
+              </Link>
+              <Link to="/auth/login" className="btn btn-lg btn-light">
+                Login
+              </Link>
             </div>
+            <div />
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default Landing;

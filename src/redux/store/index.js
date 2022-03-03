@@ -1,33 +1,28 @@
 import thunk from "redux-thunk";
-import { createStore, applyMiddleware } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import combineReducers from "../reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import setAuthToken from "../../utils/setAuthToken";
 
 const initialState = {};
-// default state
-
-const middlware = [thunk];
+const middleware = [thunk];
 
 const store = createStore(
   combineReducers,
   initialState,
-  //provide accessibility to middlware and redux devtools
-  composeWithDevTools(applyMiddleware(...middlware))
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 let currentState = store.getState();
-//to get currentstate
 
 store.subscribe(() => {
   let previousState = currentState;
   currentState = store.getState();
 
-  if (previousState.auth.accessToken !== currentState.auth.accessToken) {
-    const accessToken = currentState.auth.accessToken;
-    setAuthToken(accessToken);
+  if (previousState.auth.token !== currentState.auth.token) {
+    const token = currentState.auth.token;
+    setAuthToken(token);
   }
-  //we compare the date from two states, based on that we take a call to update the token
 });
-//exp: export default
+
 export default store;
